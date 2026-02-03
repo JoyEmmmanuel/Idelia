@@ -1,10 +1,10 @@
-import Hero from "../components//sections/Hero";
-import FuturaExperience from "../components/FuturaExperience";
+import Hero from "@/src/components/sections/Hero"
+import FuturaExperience from "@/src/components/FuturaExperience";
 import Collections from "@/src/components/sections/Collections";
-import FAQ from "../components/sections/FAQ";
-import FeaturedMasterpiece from "../components/sections/FeaturedMasterpiece";
-import MuseList from "../components/sections/MuseList";
-import StatementStrip from "../components/sections/StatementStrip";
+import FAQ from "@/src/components/sections/FAQ";
+import FeaturedMasterpiece from "@/src/components/sections/FeaturedMasterpiece";
+import MuseList from "@/src/components/sections/MuseList";
+import StatementStrip from "@/src/components/sections/StatementStrip";
 
 
 export default function Home() {
