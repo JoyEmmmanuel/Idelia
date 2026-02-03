@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+
+@theme {
+  /* This creates classes like 'bg-idelia-cream' and 'text-idelia-olive' */
+  --color-idelia-cream: #fdfcf0;
+  --color-idelia-olive: #556b2f;
+  --color-idelia-dark: #1c1c1c;
+
+  /* Connect the Next.js Fonts to Tailwind */
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
+html {
+  scroll-behavior: smooth;
+}
+/* This applies your brand colors to the whole site automatically */
+@layer base {
+  body {
+    background-color: var(--color-idelia-cream);
+    color: var(--color-idelia-dark);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* The Standard Side Padding for all IDELIA sections */
+
+  /* The Standard Max Width for content */
+  .idelia-container {
+    @apply max-w-7xl mx-auto;
+  }
+  .idelia-section-padding {
+    @apply px-6 md:px-12;
+  }
+
+  /* Standard container to match Navbar width */
+  .idelia-container {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+/* Ensure all elements respect their parent container's width */
+* {
+  box-sizing: border-box;
+}
+
+/* Specific fix for mobile select boxes */
+select {
+  max-width: 100%;
+  text-overflow: ellipsis; /* Gracefully cuts off long state names */
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@media screen and (max-width: 768px) {
+  select,
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}
