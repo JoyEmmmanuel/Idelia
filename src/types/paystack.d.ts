@@ -15,11 +15,8 @@ declare module '@paystack/inline-js' {
     onClose?: () => void
   }
 
-  // The PaystackPop class
   class PaystackPop {
     constructor(options: PaystackOptions)
-    // optionally add any methods you might call
-    setup(options: PaystackOptions): void
   }
 
   export default PaystackPop

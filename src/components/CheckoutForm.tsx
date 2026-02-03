@@ -19,13 +19,10 @@ interface Settings {
   interstateFee: number;
 }
 
-// FIXED: Defined a proper interface for the Paystack success object
-interface PaystackSuccessResponse {
+interface PaystackTransaction {
   reference: string;
   status: string;
-  trans: string;
-  message: string;
-  transaction: string;
+  message?: string;
 }
 
 export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
@@ -40,32 +37,33 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
       .catch(err => console.error("Settings fetch error:", err))
   }, [])
 
-  const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const shippingFee = settings 
-    ? (state === 'Lagos' ? settings.lagosFee : (state ? settings.interstateFee : 0)) 
-    : 0;
-  const total = subtotal + shippingFee;
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  const shippingFee = settings
+    ? state === 'Lagos'
+      ? settings.lagosFee
+      : state
+      ? settings.interstateFee
+      : 0
+    : 0
+  const total = subtotal + shippingFee
 
   const handleAcquisition = () => {
-    if (!email || !state || total === 0) return;
+    if (!email || !state || total === 0) return
 
-    const paystack = new PaystackPop();
-    
-    paystack.newTransaction({
+    new PaystackPop({
       key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || '',
-      email: email,
+      email,
       amount: total * 100,
       currency: 'NGN',
-      // FIXED: Specified the PaystackSuccessResponse type instead of any
-      onSuccess: (transaction: PaystackSuccessResponse) => {
-        console.log("Acquisition Success:", transaction.reference);
-        router.push('/success');
+      onSuccess: (transaction: PaystackTransaction) => {
+        console.log('Acquisition Success:', transaction.reference)
+        router.push('/success')
       },
-      onCancel: () => {
-        console.log("Acquisition window dismissed.");
+      onClose: () => {
+        console.log('Acquisition window dismissed.')
       }
-    });
-  };
+    })
+  }
 
   return (
     <div className="space-y-12 animate-in fade-in duration-1000">
@@ -75,9 +73,9 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
           <span className="text-[10px] text-idelia-olive font-bold tracking-[0.4em]">01</span>
           <label className="text-[11px] uppercase tracking-[0.2em] text-idelia-olive font-medium">Your Selection</label>
         </div>
-        
+
         <div className="space-y-4">
-          {cartItems.map((item: CartItem) => ( // FIXED: Item is now CartItem type
+          {cartItems.map((item: CartItem) => (
             <div key={item.id} className="flex gap-6 items-center group">
               <div className="relative w-16 h-20 bg-[#F5F5F0] overflow-hidden border border-idelia-olive/5">
                 <Image 
@@ -100,8 +98,6 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
         </div>
       </div>
 
-      {/* ... (Rest of your editorial UI remains the same) ... */}
-      
       {/* 02. LOGISTICS */}
       <div className="space-y-4 w-full overflow-hidden">
         <div className="flex items-center gap-3">
@@ -115,7 +111,7 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
             className="w-full bg-transparent border-b border-idelia-olive/20 py-4 text-xs font-light tracking-widest focus:outline-none focus:border-idelia-olive appearance-none cursor-pointer uppercase text-idelia-dark rounded-none"
           >
             <option value="" className="bg-idelia-cream">Select Region</option>
-            {NIGERIAN_STATES.map((s: string) => ( // FIXED: s is now string type
+            {NIGERIAN_STATES.map((s: string) => (
               <option key={s} value={s} className="bg-idelia-cream text-idelia-dark py-4">{s}</option>
             ))}
           </select>
